@@ -1,3 +1,6 @@
 .venv
 .env
 sqlite.db
+*.pyc
+*/__pycache__
+
