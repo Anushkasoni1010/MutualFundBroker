@@ -1,5 +1,8 @@
 # 📊 Mutual Fund Broker API
 
+*** IMPORTANT NOTE: Please replace the rapid api's API KEY before starting the app ***
+
+
 This is a backend service built using **FastAPI** that allows users to:
 
 - Sign up and log in securely.
