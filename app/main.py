@@ -22,7 +22,7 @@ try:
     app.include_router(portfolio.router, prefix="/portfolio")
     logger.info("Routers registered successfully.")
 except Exception as e:
-    logger.exception("Failed to include one or more routers.")
+    logger.exception(f"Failed to include one or more routers: {str(e)}")
     sys.exit(1)
 
 try:
@@ -31,6 +31,6 @@ try:
     scheduler.start()
     logger.info("Scheduler started successfully.")
 except Exception as e:
-    logger.exception("Failed to start scheduler.")
+    logger.exception(f"Failed to start scheduler: {str(e)}")
     sys.exit(1)
 

@@ -26,7 +26,7 @@ async def get_fund_houses():
         logger.error(f"Failed to fetch fund houses: {e}")
         return []
     except Exception as e:
-        logger.exception("Unexpected error in get_fund_houses")
+        logger.exception(f"Unexpected error in get_fund_houses: {str(e)}")
         return []
 
 
@@ -41,7 +41,7 @@ async def get_open_ended_schemes(fund_family):
         logger.error(f"Failed to fetch schemes for {fund_family}: {e}")
         return []
     except Exception as e:
-        logger.exception("Unexpected error in get_open_ended_schemes")
+        logger.exception(f"Unexpected error in get_open_ended_schemes: {str(e)}")
         return []
 
 def update_all_navs():
@@ -72,6 +72,6 @@ def update_all_navs():
                 logger.error(f"Error updating NAV for Scheme_Code {code}: {e}")
         db.commit()
     except Exception as e:
-        logger.exception("Unexpected error during NAV update")
+        logger.exception(f"Unexpected error during NAV update: {str(e)}")
     finally:
         db.close()

@@ -24,18 +24,21 @@ def add_investment(fund_house: str, scheme_code: str, units: float, db: Session 
         inv = UserPortfolio(user_id=current_user, fund_house=fund_house, scheme_code=scheme_code, units=units,
                             purchase_date=datetime.now(UTC))
         db.add(inv)
-        nav_update = NAV(scheme_code=scheme_code, nav=0, last_updated=datetime.now(UTC))
-        db.add(nav_update)
+
+        nav = db.query(NAV).filter(NAV.scheme_code == scheme_code).first()
+        if not nav:
+            nav_update = NAV(scheme_code=scheme_code, nav=0, last_updated=datetime.now(UTC))
+            db.add(nav_update)
         db.commit()
         return {"msg": "Investment added"}
     except SQLAlchemyError as e:
         db.rollback()
         logger.error(f"Database error while adding investment for user {current_user}: {e}")
-        raise HTTPException(status_code=500, detail="Failed to add investment")
+        raise HTTPException(status_code=500, detail=f"Failed to add investment: {str(e)}")
     except Exception as e:
         db.rollback()
         logger.exception("Unexpected error in add_investment")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @router.get("/")
 def get_portfolio(db: Session = Depends(get_db), current_user: str = Depends(get_current_user), token: str = Depends(oauth2_scheme)):
@@ -54,8 +57,8 @@ def get_portfolio(db: Session = Depends(get_db), current_user: str = Depends(get
         return portfolio
     except SQLAlchemyError as e:
         logger.error(f"Database error while fetching portfolio for user {current_user}: {e}")
-        raise HTTPException(status_code=500, detail="Failed to fetch portfolio")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch portfolio: {str(e)}")
 
     except Exception as e:
         logger.exception("Unexpected error in get_portfolio")
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
