@@ -22,7 +22,7 @@ try:
     app.include_router(portfolio.router, prefix="/portfolio")
     logger.info("Routers registered successfully.")
 except Exception as e:
-    logger.exception(f"Failed to include one or more routers: {str(e)}")
+    logger.exception(f"Failed to include one or more routers: {e}")
     sys.exit(1)
 
 try:
